@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Add Executive{% endblock %}
+{% block content %}
+<div class="container">
+    <legend class="tm-color-primary tm-post-title tm-mb-60">
+      <h2>Add Executive</h2>
+    </legend>
+    <form method="POST" action="">  
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.user.label(class="form-control-label text-right tm-color-primary") }}
+        
+            {% if form.user.errors %}
+              {{ form.user(class="form-control form-control-lg is-valid") }}
+              <div class="invalid-feedback">
+                {% for error in form.user.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+                {{ form.user(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+
+
+        <div class="form-group">
+            {{ form.post.label(class="form-control-label text-right tm-color-primary") }}
+        
+            {% if form.post.errors %}
+              {{ form.post(class="form-control form-control-lg is-valid") }}
+              <div class="invalid-feedback">
+                {% for error in form.post.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              
+            {% else %}
+                {{ form.post(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+        
+        
+        <div class="form-group row text-right">
+            <div class="col-12">
+                {{ form.submit(class="tm-btn tm-btn-primary tm-btn-small") }} 
+            </div>               
+        </div>     
+    </form>
+</div>
+{% endblock %}

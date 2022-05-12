@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}Post Page{% endblock %}
+{% block content %}
+    <div class="row tm-row">
+        {% if post.author==current_user %}
+        <div class="text-right">
+          <a href="{{ url_for('post.post_update', post_id=post.id) }}" class="tm-btn tm-btn-primary tm-btn-small text-right">Update</a>
+        </div>
+        <form action="" method="POST">
+          <div class="text-right">
+            <a href="{{ url_for('post.delete_post', post_id=post.id) }}" class="tm-btn tm-btn-primary tm-btn-small text-right">Delete</a>
+          </div>
+        </form>
+        {% endif %}
+        
+        <div class="col-12">
+            <hr class="tm-hr-primary tm-mb-55">
+            {% if post.image_file!="default.jpg" %}
+            <img src="{{ url_for('static', filename='img/' + post.image_file ) }}" alt="Image" class="img-fluid">
+            {% endif %}
+        </div>
+    </div>
+    <div class="row tm-row">
+        <div class="col-lg-8 tm-post-col">
+            <div class="tm-post-full">
+                <div class="mb-4">
+                    <h2 class="pt-2 tm-color-primary tm-post-title">{{ post.title }}</h2>
+                    <p class="tm-mb-40">{{ post.date_posted.strftime("%Y-%m-%d") }} posted by {{ post.author }}</p>
+                    <p>
+                        {{ post.content }}
+                    </p>
+                    <span class="d-block text-right tm-color-primary">{% for category in post.category %}{{ category.category }} . {% endfor %}</span>
+                </div>
+                
+                <!-- Comments -->
+                <div>
+                    <h2 class="tm-color-primary tm-post-title">Comments</h2>
+                    <hr class="tm-hr-primary tm-mb-45">
+                    {% for comment in comments %}
+                    <div class="tm-comment tm-mb-45">
+                        {% if user %}
+                        <figure class="tm-comment-figure">
+                            <img src="{{ url_for('static', filename='img/' + user.image_file ) }}" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+                            <figcaption class="tm-color-primary text-center">{{ user.first_name }} {{ user.last_name }}</figcaption>
+                        </figure>
+                        {% else %}
+                        <figure class="tm-comment-figure">
+
+                            <img src="{{ url_for('static', filename='img/default.jpg' ) }}" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+
+                            <figcaption class="tm-color-primary text-center">{{ comment.name }}</figcaption>
+                        </figure>
+                        {% endif %}
+                        <div>
+                            <p>{{ comment.comment }}</p>
+                            <div class="d-flex justify-content-between">
+                                <a href="#" class="tm-color-primary">REPLY</a>
+                                <span class="tm-color-primary">{{ comment.comment_date.strftime("%Y-%m-%d") }}</span>
+                            </div>                                                 
+                        </div>
+                        <hr>
+                    </div>
+                    {% endfor %}
+
+                    <form action="" class="mb-5 tm-comment-form" method="POST">
+                    {{ form.hidden_tag() }}
+                        <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
+                        <div class="mb-4">
+                          
+                          {{ form.name.label(class="form-label text-right tm-color-primary") }}
+                
+                          {% if form.name.errors %}
+                            {{ form.name(class="form-control mr-0 ml-auto is-valid") }}
+                            <div class="invalid-feedback">
+                              {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                              {% endfor %}
+                            </div>
+                          {% else %}
+                          <div class="">
+                              {{ form.name(class="form-control mr-0 ml-auto") }}
+                          </div>
+                          {% endif %}
+                          
+                        </div>
+                        
+                        
+                        <div class="mb-4">
+                          
+                          {{ form.email.label(class="form-label text-right tm-color-primary") }}
+                
+                          {% if form.email.errors %}
+                            {{ form.email(class="form-control mr-0 ml-auto is-valid") }}
+                            <div class="invalid-feedback">
+                              {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                              {% endfor %}
+                            </div>
+                          {% else %}
+                          <div class="">
+                              {{ form.email(class="form-control mr-0 ml-auto") }}
+                          </div>
+                          {% endif %}
+                          
+                        </div>
+                        
+                        
+                        <div class="mb-4">
+                          
+                          {{ form.comment.label(class="form-label text-right tm-color-primary") }}
+                
+                          {% if form.comment.errors %}
+                            {{ form.comment(class="form-control mr-0 ml-auto is-valid") }}
+                            <div class="invalid-feedback">
+                              {% for error in form.comment.errors %}
+                                <span>{{ error }}</span>
+                              {% endfor %}
+                            </div>
+                          {% else %}
+                          <div class="">
+                              {{ form.comment(class="form-control mr-0 ml-auto") }}
+                          </div>
+                          {% endif %}
+                          
+                        </div>
+                        
+
+                        <div class="text-right">
+                            {{ form.submit(class="tm-btn tm-btn-primary tm-btn-small") }} 
+                        </div>                                
+                    </form>                          
+                </div>
+            </div>
+        </div>
+        <aside class="col-lg-4 tm-aside-col">
+            <div class="tm-post-sidebar">
+                <hr class="mb-3 tm-hr-primary">
+                {% if categories %}
+                <h2 class="mb-4 tm-post-title tm-color-primary">Categories</h2>
+                    <ul class="tm-mb-75 pl-5 tm-category-list">
+                    {% for category in categories %}
+                        <li><a href="#" class="tm-color-primary">{{ category.category }}</a></li>
+                    {% endfor %}
+                    </ul>
+                <hr class="mb-3 tm-hr-primary">
+                {% endif %}
+                <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Posts</h2>
+                {% for post in rel_posts %}
+                  <a href="#" class="d-block tm-mb-40">
+                      <figure>
+                          <img src="{{ url_for('static', filename='img/' + post.image_file) }}" alt="Image" class="mb-3 img-fluid">
+                          <figcaption class="tm-color-primary">{{ post.title }}</figcaption>
+                      </figure>
+                  </a>
+                {% endfor %}
+                
+            </div>                    
+        </aside>
+    </div>
+{% endblock %}

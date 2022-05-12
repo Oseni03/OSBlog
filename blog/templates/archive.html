@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+  <a href="{{ url_for('admin.messages') }}" class="tm-btn tm-btn-primary tm-btn-small text-right">Unread</a>
+  <br>
+  <br>
+  {% for message in messages %}
+  {% if message.is_read() %}
+  <div class="shadow p-3 mb-5 bg-body rounded">
+    <div class="mb-4">
+      <h2 class="pt-2 tm-color-primary tm-post-title">{{ message.subject }}</h2>
+      <form action="" method="POST">
+        <div class="text-right">
+          <a href="{{ url_for('admin.delete_message', id=message.id) }}" class="tm-btn tm-btn-primary tm-btn-small text-right">Delete</a>
+        </div>
+      </form>
+      <p class="tm-mb-40">{{ message.date.strftime("%Y-%m-%d") }} sent by {{ message.name }}</p>
+      <p>
+        {{ message.message }}
+      </p>
+    </div>
+  </div>
+  
+  {% endif %}
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+  <!-- Search form -->
+
+    <div class="row tm-row">
+        <div class="col-12">
+            <form method="POST" class="form-inline tm-mb-80 tm-search-form">     
+                {{ form.hidden_tag() }}
+                {{ form.search(class="form-control tm-search-input") }}
+                {{ form.submit(class="tm-search-button") }} 
+                <!--<button class="tm-search-button" type="submit">-->
+                <!--    <i class="fas fa-search tm-search-icon" aria-hidden="true"></i>-->
+                <!--</button>              -->
+            </form>
+        </div>                
+    </div>            
+
+    <div class="row tm-row">
+    {% for post in posts.items %}
+        <article class="col-12 col-md-6 tm-post">
+            <hr class="tm-hr-primary">
+            <a href="{{ url_for('post.single_post', post_id=post.id) }}" class="effect-lily tm-post-link tm-pt-60">
+                {% if post.image_file != "default.jpg" %}
+                    <div class="tm-post-link-inner">
+                        <img src="{{ url_for('static', filename='img/' + post.image_file ) }}" alt="Image" class="img-fluid">
+                    </div>
+                {% endif %}
+                <span class="position-absolute tm-new-badge">New</span>
+                <h2 class="tm-pt-30 tm-color-primary tm-post-title">{{ post.title }}</h2>
+            </a>                    
+            <p class="tm-pt-30">
+                {{ post.content }}
+            </p>
+            <div class="d-flex justify-content-between tm-pt-45">
+                <span class="tm-color-primary">
+                  {% for category in post.category %}
+                    {{ category.category }} . 
+                  {% endfor %}
+                </span>
+                <span class="tm-color-primary">{{ post.date_posted.strftime("%Y-%m-%d") }}</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between">
+                <span>{{ post.comment|count }} comments</span>
+                <span>by {{ post.author }}</span>
+            </div>
+        </article>
+    {% endfor %}
+    </div>
+    <div class="row tm-row tm-mt-100 tm-mb-75">
+
+        <!--<div class="tm-prev-next-wrapper">-->
+
+        <!--    <a href="#" class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled tm-mr-20">Prev</a>-->
+        <!--    <a href="#" class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>-->
+        <!--</div>-->
+        <div class="tm-paging-wrapper">
+            <span class="d-inline-block mr-3">Page</span>
+            <nav class="tm-paging-nav d-inline-block">
+            {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+              {% if posts.page == page_num %}
+                <ul>
+                    <li class="tm-paging-item active">
+                        <a href="{{ url_for('auth.home', page=page_num) }}" class="mb-2 tm-btn tm-paging-link">{{ page_num }}</a>
+                    </li>
+                </ul>
+              {% else %}
+                <ul>
+                    <li class="tm-paging-item active">
+                        <a href="{{ url_for('auth.home', page=page_num) }}" class="mb-2 tm-btn tm-paging-link">{{ page_num }}</a>
+                    </li>
+                </ul>
+              {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+            {% endfor %}
+            </nav>
+        </div>                
+    </div>
+
+{% endblock %}
