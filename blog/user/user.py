@@ -45,7 +45,6 @@ def update_user():
 @login_required
 def profile():
   posts=Post.query.filter_by(author=current_user).order_by(Post.date_posted.desc()).all()
-  comment_no=0
   
   form=UpdateAccountForm()
   if form.validate_on_submit():
@@ -68,4 +67,4 @@ def profile():
     form.email.data=current_user.email
    
     
-  return render_template("profile.html", posts=posts, form=form, comment_no=comment_no)
+  return render_template("profile.html", posts=posts, form=form)

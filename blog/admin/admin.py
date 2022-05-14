@@ -119,9 +119,7 @@ def executive_delete(id):
 def messages():
   messages=Contact.query.order_by(Contact.id.desc()).all()
   
-  for message in messages:
-    unread=message.is_not_read()
-  return render_template("messages.html", unread=unread, messages=messages)
+  return render_template("messages.html", messages=messages)
   
 @admin.route("/message/<int:id>/read")
 @login_required
@@ -136,9 +134,7 @@ def read(id):
 @login_required
 def archive():
   messages=Contact.query.order_by(Contact.id.desc()).all()
-  for message in messages:
-    read=message.is_read()
-  return render_template("archive.html", messages=messages, read=read)
+  return render_template("archive.html", messages=messages)
 
   
 @admin.route("/message/<int:id>/delete")
