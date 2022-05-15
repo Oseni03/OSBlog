@@ -71,12 +71,12 @@ def logout():
 def home():
   page = request.args.get("page", 1, type=int)
   
-  posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+  posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=15)
   form=SearchForm()
   if form.validate_on_submit():
     search_word=form.search.data
     if search_word:
-      posts=Post.query.filter(Post.title.like("%" + search_word + "%")).all().paginate(page=page, per_page=5)
+      posts=Post.query.filter(Post.title.like("%" + search_word + "%")).all().paginate(page=page, per_page=15)
     
   return render_template("home.html", posts=posts, form=form)
   

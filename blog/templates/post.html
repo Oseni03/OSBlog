@@ -139,14 +139,14 @@
                 <h2 class="mb-4 tm-post-title tm-color-primary">Categories</h2>
                     <ul class="tm-mb-75 pl-5 tm-category-list">
                     {% for category in categories %}
-                        <li><a href="#" class="tm-color-primary">{{ category.category }}</a></li>
+                        <li><a href="#" class="tm-color-primary">{{ category.name }}</a></li>
                     {% endfor %}
                     </ul>
                 <hr class="mb-3 tm-hr-primary">
                 {% endif %}
                 <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Posts</h2>
                 {% for post in rel_posts %}
-                  <a href="#" class="d-block tm-mb-40">
+                  <a href="{{ url_for('post.single_post', post_id=post.id) }}" class="d-block tm-mb-40">
                       <figure>
                           <img src="{{ url_for('static', filename='img/' + post.image_file) }}" alt="Image" class="mb-3 img-fluid">
                           <figcaption class="tm-color-primary">{{ post.title }}</figcaption>
@@ -157,4 +157,5 @@
             </div>                    
         </aside>
     </div>
+
 {% endblock %}

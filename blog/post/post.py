@@ -32,7 +32,7 @@ def single_post(post_id):
   user=None
   for comment in comments:
     user = User.query.filter_by(email=comment.email).first()
-  categories=PostCategory.query.all()
+  categories=Category.query.all()
   
   # TO FIND ALL THE POSTCATEGORIES IDS ASSOCIATED WITH THE POST 
   rel_id=[]
@@ -43,7 +43,7 @@ def single_post(post_id):
   # TO FIND ALL THE CATEGORIES IDS ASSOCIATED WITH THE POSTCATEGORY  
   cats=[]
   for id in rel_id:
-    cats.append(PostCategory.query.filter_by(cat_id=id).all())
+    cats.append(PostCategory.query.filter_by(cat_id=id).limit(5).all())
     
   categorys=[]
   for cat in cats:
