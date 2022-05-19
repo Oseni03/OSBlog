@@ -78,7 +78,7 @@ def home():
     if search_word:
       posts=Post.query.filter(Post.title.like("%" + search_word + "%")).all().paginate(page=page, per_page=15)
     
-  return render_template("home.html", posts=posts, form=form)
+  return render_template("home.html", posts=posts, form=form, title="Home 🏡 age", paging=posts)
   
   
 @auth.route("/about")

@@ -5,6 +5,7 @@ from PIL import Image
 from blog.models import User, Post, Category, PostCategory, Comment
 from blog.post.forms import CommentForm, CreatePostForm
 from flask_login import login_user, current_user, logout_user, login_required
+from blog.auth.forms import SearchForm
 
 
 post = Blueprint('post', __name__,
@@ -28,7 +29,7 @@ def secure_filename(filename):
 @post.route("/post/<int:post_id>", methods=["GET", "POST"])
 def single_post(post_id):
   post=Post.query.get_or_404(post_id)
-  comments=Comment.query.filter_by(post=post).order_by(Comment.comment_date.desc()).all()
+  comments=Comment.query.filter_by(post=post).order_by(Comment.comment_date.desc()).limit(3)
   user=None
   for comment in comments:
     user = User.query.filter_by(email=comment.email).first()
@@ -55,6 +56,8 @@ def single_post(post_id):
   for category in categorys:
     if category.post not in rel_posts:
       rel_posts.append(category.post)
+      if len(rel_posts) == 3:
+        break
   
   
   form=CommentForm()
@@ -160,3 +163,18 @@ def delete_post(post_id):
   return redirect(url_for("auth.home"))
   
   
+@post.route("/category/<int:cat_id>/posts", methods=["POST", "GET"])
+def cat_posts(cat_id):
+  page = request.args.get("page", 1, type=int)
+  form=SearchForm()
+  #postcats = PostCategory.query.filter_by(cat_id=cat_id).all()
+  cat = Category.query.get(cat_id)
+  postcats = PostCategory.query.filter(PostCategory.category==cat).paginate(page=page, per_page=15)
+  posts = []
+  for postcat in postcats.items:
+    posts.append(postcat.post)
+  if form.validate_on_submit():
+    search_word=form.search.data
+    if search_word:
+      posts=Post.query.filter(Post.title.like("%" + search_word + "%")).all().paginate(page=page, per_page=15)
+  return render_template("cat_posts.html", posts=posts, form=form, title="Category Post", paging=postcats, cat_id=cat_id)

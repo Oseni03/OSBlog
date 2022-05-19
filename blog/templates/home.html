@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Home Page{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 {% block content %}
   <!-- Search form -->
 
@@ -58,7 +58,7 @@
         <div class="tm-paging-wrapper">
             <span class="d-inline-block mr-3">Page</span>
             <nav class="tm-paging-nav d-inline-block">
-            {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% for page_num in paging.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
             {% if page_num %}
               {% if posts.page == page_num %}
                 <ul>
