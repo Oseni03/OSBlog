@@ -11,33 +11,14 @@
         <div class="form-group">
             {{ form.user.label(class="form-control-label text-right tm-color-primary") }}
         
-            {% if form.user.errors %}
-              {{ form.user(class="form-control form-control-lg is-valid") }}
-              <div class="invalid-feedback">
-                {% for error in form.user.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% else %}
-                {{ form.user(class="form-control form-control-lg") }}
-            {% endif %}
+            {{ form.user(class="form-control form-control-lg") }}
         </div>
 
 
         <div class="form-group">
             {{ form.post.label(class="form-control-label text-right tm-color-primary") }}
         
-            {% if form.post.errors %}
-              {{ form.post(class="form-control form-control-lg is-valid") }}
-              <div class="invalid-feedback">
-                {% for error in form.post.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-              
-            {% else %}
-                {{ form.post(class="form-control form-control-lg") }}
-            {% endif %}
+            {{ form.post(class="form-control form-control-lg") }}
         </div>
         
         

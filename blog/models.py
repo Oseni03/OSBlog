@@ -3,6 +3,7 @@ from blog import db, login_manager, app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
+from itsdangerous.serializer import Serializer
 
 
 @login_manager.user_loader
@@ -19,7 +20,6 @@ class User(db.Model, UserMixin):
   admin = db.Column(db.Boolean(), default=False)
   posts = db.relationship("Post", backref="author", lazy=True, cascade="all, delete")
   executive = db.relationship("Executives", backref="exco", lazy=True, cascade="all, delete")
-  reset_codes = db.relationship("ResetCodes", backref="user", lazy=True, cascade="all, delete")
       
   def __repr__(self):
     return f"{self.first_name} {self.last_name}"
@@ -29,6 +29,20 @@ class User(db.Model, UserMixin):
     
   def is_admin(self):
     return self.admin
+    
+    
+  def get_reset_token(self, expires_sec=1800):
+    s= Serializer(app.config["SECRET_KEY"])
+    return s.dumps({"user_id": self.id})
+    
+    
+  def verify_reset_token(token):
+    s= Serializer(app.config["SECRET_KEY"])
+    try:
+      user_id = s.loads(token)["user_id"]
+    except:
+      return None
+    return user_id
 
     
 class Post(db.Model, UserMixin):
@@ -99,28 +113,4 @@ class Contact(db.Model, UserMixin):
   def is_not_read(self):
     return not self.read
   
-  
-class ResetCodes(db.Model):
-  id = db.Column(db.Integer, primary_key=True) 
-  user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-  code = db.Column(db.Integer, nullable=False)
-  timestamp = db.Column(db.DateTime(120), nullable=False, default=datetime.datetime.utcnow())
-  used = db.Column(db.Boolean(), nullable=False, default=False)
-  
-  def is_used(self):
-    return self.used
-    
-  def code_status(self, code, user):
-    expiring_time = datetime.timedelta(seconds=30)
-    now = datetime.datetime.utcnow()
-    
-    if self.user==user and self.code!=code and self.timestamp + expiring_time > now:
-      return "Invalid"
-    elif self.user==user and self.code==code and self.timestamp + expiring_time < now:
-      return "Expired"
-    elif self.user==user and self.code==code and self.timestamp + expiring_time > now and self.used==False:
-      return "Valid"
-      
-  def mark_used(self):
-    self.used=True
   

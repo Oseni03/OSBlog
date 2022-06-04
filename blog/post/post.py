@@ -67,6 +67,10 @@ def single_post(post_id):
     db.session.commit()
     flash("Comment successful", "success")
     return redirect(url_for("post.single_post", post_id=post.id))
+  elif form.errors:
+    for error in form.errors.values():
+      error = str(error).replace("[", "").replace("]", "").replace("'", "")
+      flash(error, "danger")
   
   return render_template("post.html", post=post, categories=categories, comments=comments, user=user, form=form, rel_posts=rel_posts)
   
@@ -119,6 +123,10 @@ def create_post():
         
       flash("Post created successfully", "success")
       return redirect(url_for("auth.home"))
+  elif form.errors:
+    for error in form.errors.values():
+      error = str(error).replace("[", "").replace("]", "").replace("'", "")
+      flash(error, "danger")
   return render_template("create_post.html", form=form, title="Create Post", legend="Create Post")
   
   
@@ -144,6 +152,10 @@ def post_update(post_id):
 
     flash("Post updated successfully", "success")
     return redirect(url_for("post.single_post", post_id=post_id))
+  elif form.errors:
+    for error in form.errors.values():
+      error = str(error).replace("[", "").replace("]", "").replace("'", "")
+      flash(error, "danger")
   elif request.method == "GET":
     form.title.data = post.title
     form.content.data = post.content

@@ -11,17 +11,7 @@
         <div class="form-group">
             {{ form.name.label(class="form-control-label text-right tm-color-primary") }}
         
-            {% if form.name.errors %}
-              {{ form.name(class="form-control form-control-lg is-valid") }}
-              <div class="invalid-feedback">
-                {% for error in form.name.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-              
-            {% else %}
-                {{ form.name(class="form-control form-control-lg") }}
-            {% endif %}
+            {{ form.name(class="form-control form-control-lg") }}
         </div>
         
         

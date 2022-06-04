@@ -13,58 +13,27 @@
         <div class="form-group">
             {{ form.title.label(class="form-control-label text-right tm-color-primary") }}
         
-            {% if form.title.errors %}
-              {{ form.title(class="form-control form-control-lg is-valid") }}
-              <div class="invalid-feedback">
-                {% for error in form.title.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-              
-            {% else %}
-                {{ form.title(class="form-control form-control-lg") }}
-            {% endif %}
+            {{ form.title(class="form-control form-control-lg") }}
         </div>
         
         
         <div class="form-group">
             {{ form.picture.label(class="form-control-label text-right tm-color-primary") }}
         
-            {% if form.picture.errors %}
-              {{ form.picture(class="form-control form-control-lg is-valid") }}
-              <div class="invalid-feedback">
-                {% for error in form.picture.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% else %}
-                {{ form.picture(class="form-control form-control-lg") }}
-            {% endif %}
+            {{ form.picture(class="form-control form-control-lg") }}
         </div>
         
         
         <div class="form-group">
             {{ form.content.label(class="form-control-label text-right tm-color-primary") }}
         
-            {% if form.content.errors %}
-              {{ form.content(class="form-control form-control-lg is-valid") }}
-              <div class="invalid-feedback">
-                {% for error in form.content.errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% else %}
-                {{ form.content(class="form-control form-control-lg") }}
-            {% endif %}
+            {{ form.content(class="form-control form-control-lg") }}
         </div>
-        
-        
-
         
         
         <div class="form-group row text-right">
             <div class="col-12">
-                {{ form.submit(class="tm-btn tm-btn-primary tm-btn-small") }} 
+              {{ form.submit(class="tm-btn tm-btn-primary tm-btn-small") }} 
             </div>               
         </div>     
     </form>

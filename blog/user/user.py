@@ -22,23 +22,6 @@ def secure_filename(filename):
   i.save(os.path.join(app.config['UPLOAD_FOLDER'], picture_fn))
   
   return picture_fn
-    
-@user.route("/update", methods=['GET', 'POST'])
-@login_required
-def update_user():
-  form=UpdateAccountForm()
-  if form.validate_on_submit():
-    user=User(
-      first_name=form.first_name.data,
-      last_name=form.last_name.data,
-      email=form.email.data,
-      image_file=form.picture.data
-      )
-    db.session.add(user)
-    db.session.commit()
-    flash("Account updated successfully", "success")
-    return redirect(url_for(""))
-  return render_template("update_user.html")
 
     
 @user.route("/profile", methods=['GET', 'POST'])
@@ -66,5 +49,8 @@ def profile():
     form.last_name.data = current_user.last_name
     form.email.data=current_user.email
    
-    
+  elif form.errors:
+    for error in form.errors.values():
+      error = str(error).replace("[", "").replace("]", "").replace("'", "")
+      flash(error, "danger")
   return render_template("profile.html", posts=posts, form=form)

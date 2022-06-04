@@ -69,18 +69,7 @@
                           
                           {{ form.name.label(class="form-label text-right tm-color-primary") }}
                 
-                          {% if form.name.errors %}
-                            {{ form.name(class="form-control mr-0 ml-auto is-valid") }}
-                            <div class="invalid-feedback">
-                              {% for error in form.name.errors %}
-                                <span>{{ error }}</span>
-                              {% endfor %}
-                            </div>
-                          {% else %}
-                          <div class="">
-                              {{ form.name(class="form-control mr-0 ml-auto") }}
-                          </div>
-                          {% endif %}
+                          {{ form.name(class="form-control mr-0 ml-auto") }}
                           
                         </div>
                         
@@ -89,18 +78,7 @@
                           
                           {{ form.email.label(class="form-label text-right tm-color-primary") }}
                 
-                          {% if form.email.errors %}
-                            {{ form.email(class="form-control mr-0 ml-auto is-valid") }}
-                            <div class="invalid-feedback">
-                              {% for error in form.email.errors %}
-                                <span>{{ error }}</span>
-                              {% endfor %}
-                            </div>
-                          {% else %}
-                          <div class="">
-                              {{ form.email(class="form-control mr-0 ml-auto") }}
-                          </div>
-                          {% endif %}
+                          {{ form.email(class="form-control mr-0 ml-auto") }}
                           
                         </div>
                         
@@ -109,18 +87,8 @@
                           
                           {{ form.comment.label(class="form-label text-right tm-color-primary") }}
                 
-                          {% if form.comment.errors %}
-                            {{ form.comment(class="form-control mr-0 ml-auto is-valid") }}
-                            <div class="invalid-feedback">
-                              {% for error in form.comment.errors %}
-                                <span>{{ error }}</span>
-                              {% endfor %}
-                            </div>
-                          {% else %}
-                          <div class="">
-                              {{ form.comment(class="form-control mr-0 ml-auto") }}
-                          </div>
-                          {% endif %}
+
+                          {{ form.comment(class="form-control mr-0 ml-auto") }}
                           
                         </div>
                         

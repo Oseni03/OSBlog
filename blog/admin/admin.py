@@ -32,6 +32,10 @@ def add_executive():
     db.session.commit()
     flash("Executive added successfully", "success")
     return redirect(url_for("admin.users_list_admin"))
+  elif form.errors:
+    for error in form.errors.values():
+      error = str(error).replace("[", "").replace("]", "").replace("'", "")
+      flash(error, "danger")
   return render_template("add_executive.html", form=form)
 
   
@@ -45,6 +49,10 @@ def add_category():
     db.session.commit()
     flash("Category added successfully", "success")
     return redirect(url_for("admin.add_category"))
+  elif form.errors:
+    for error in form.errors.values():
+      error = str(error).replace("[", "").replace("]", "").replace("'", "")
+      flash(error, "danger")
   return render_template("add_category.html", form=form)
   
 
@@ -61,6 +69,10 @@ def user_update(id):
     db.session.commit()
     flash('User Updated.', 'info')
     return redirect(url_for('auth.users_list_admin'))
+  elif form.errors:
+    for error in form.errors.values():
+      error = str(error).replace("[", "").replace("]", "").replace("'", "")
+      flash(error, "danger")
     
   elif request.method == "GET":
     form.last_name.data = user.last_name
